@@ -78,6 +78,8 @@ do
         recipient_name=$(echo "$email_raw" | sed -n -e '/^To:/p'|grep -o '".*"')
         recipient_email=$(echo "$email_raw" | sed -n -e '/^To:/p'|grep -o "[[:alpha:]][[:graph:]]*@[[:graph:]]*[[:alpha:]]")
         date=$(echo "$email_raw" | sed -n -e '/Date:/p'|grep -o "[[:digit:]]\+[[:space:]][[:alpha:]]\+[[:space:]][[:digit:]]\+")
+        about_money=$(echo "$email_raw" |grep -o -in "[USus ]*[$][0-9,.]*[Billion|Millon| ]*")
+        about_money_data=$(echo "$email_raw" |grep -in "[USus ]*[$][0-9,.]*[Billion|Million| ]*")
 
         echo "sender name: ""$sender_name"
         echo "sender email: ""$sender_email"
@@ -86,7 +88,14 @@ do
         echo "Date: ""$date"
         echo "Email Body: "
         echo "$email_body"
-        echo "<><><><><><><><><><>><>"
+        echo ""
+        echo "--end of email--"
+        echo "*** Analyze wording about money"
+        echo $about_money        
+        echo ""
+        echo "*** sentence about money"
+        echo -e $about_money_data        
+        echo "<><><> END <><><>><>"
         ((idx=idx+1))
     fi
 
